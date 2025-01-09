@@ -32,7 +32,6 @@ Resources:
              - s3:PutObject
             Resource: !Sub '${ValouStaticWebsiteBucket.Arn}/*'
 
-  # DNS Record in Route 53
   ValouVitrineDNSRecord:
     Type: AWS::Route53::RecordSet
     Properties:
