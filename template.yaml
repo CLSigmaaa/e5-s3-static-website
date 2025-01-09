@@ -6,7 +6,7 @@ Resources:
   ValouStaticWebsiteBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: valou-static-website-bucket
+      BucketName: vitrine-valou.e5estiam.com
       WebsiteConfiguration:
         IndexDocument: index.html
         ErrorDocument: index.html
