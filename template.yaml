@@ -1,0 +1,49 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Basic CloudFormation template for API Gateway with Lambda function, DynamoDB, and Cognito authentication
+
+Resources:
+  # S3 Bucket
+  ValouStaticWebsiteBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: valou-static-website-bucket
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: index.html
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: false
+        IgnorePublicAcls: false
+        BlockPublicPolicy: false
+        RestrictPublicBuckets: false
+
+  ValouStaticWebsiteBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref ValouStaticWebsiteBucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: PublicReadGetObject
+            Effect: Allow
+            Principal: "*"
+            Action:
+             - s3:GetObject
+             - s3:PutObjectAcl
+             - s3:PutObject
+            Resource: !Sub '${ValouStaticWebsiteBucket.Arn}/*'
+
+  # DNS Record in Route 53
+  ValouVitrineDNSRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneName: e5estiam.com.
+      Name: vitrine-valou.e5estiam.com
+      Type: CNAME
+      TTL: 300
+      ResourceRecords:
+        - !Sub "${ValouStaticWebsiteBucket.WebsiteURL}"
+  
+Outputs:
+  ValouS3WebsiteUrl:
+    Value: !Sub 'http://${ValouStaticWebsiteBucket}.s3-website-${AWS::Region}.amazonaws.com'
+    Description: URL de l'hébergement web statique S3.
