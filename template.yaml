@@ -39,7 +39,7 @@ Resources:
       HostedZoneName: e5estiam.com.
       Name: vitrine-valou.e5estiam.com
       Type: CNAME
-      TTL: 300
+      TTL: '300'
       ResourceRecords:
         - !Sub "${ValouStaticWebsiteBucket.WebsiteURL}"
   
